@@ -4,22 +4,12 @@ import sys
 verbose = False
 
 def do_imports():
-    saved_library_path = sys.path.copy()
-    this_directory = dirname(sys.argv[0])
-    try:
-        sys.path[:0] = [
-            abspath(join(this_directory, '..','..','..'))
-        ]
-        import irods.client
-        import irods.client.message.property_types
-        import irods.client.message.ordered
-        import irods.client.message.message
-        import irods.client.message.quasixml
-        if verbose:
-            print(sys.path)
-#       return irods.client.message.ET()
-    finally:
-        sys.path[:] = saved_library_path
+    import irods.client
+    import irods.client.message.property_types
+    import irods.client.message.ordered
+    import irods.client.message.message
+    import irods.client.message.quasixml
+    return irods.client.message.ET()
 
 def test_et():
   assert do_imports() is not None
