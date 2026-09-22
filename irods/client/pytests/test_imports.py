@@ -5,11 +5,11 @@ verbose = False
 
 def do_imports():
     import irods.client
-    import irods.client.message.property_types
-    import irods.client.message.ordered
-    import irods.client.message.message
-    import irods.client.message.quasixml
-    return irods.client.message.ET()
+    import irods.client.low_level.message.property_types
+    import irods.client.low_level.message.ordered
+    import irods.client.low_level.message.message
+    import irods.client.low_level.message.quasixml
+    return irods.client.low_level.message.ET()
 
 def test_et():
   assert do_imports() is not None
