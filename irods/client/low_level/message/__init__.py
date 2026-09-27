@@ -15,7 +15,7 @@ from warnings import warn
 
 #import irods.exception as ex
 
-from . import quasixml as ET_quasi_xml
+from . import quasixml
 from .message import Message
 from .property_types import (
     ArrayProperty,
@@ -170,12 +170,9 @@ def __getattr__(name):
     if name == '_XML_parser':
         impl = globals().get('__XML_parser')
         if not impl:
-#           import defusedxml.ElementTree as ET_secure_xml
-
             impl = __XML_parser = {
 #               XML_Parser_Type.STANDARD_XML: ET_xml,
-                XML_Parser_Type.QUASI_XML: ET_quasi_xml,
-#               XML_Parser_Type.SECURE_XML: ET_secure_xml,
+                XML_Parser_Type.QUASI_XML: quasixml,
             }
         return impl
 

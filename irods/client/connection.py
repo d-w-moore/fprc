@@ -10,7 +10,7 @@ import datetime
 import errno
 from .utility import password_obfuscation as obf
 
-from . import LONG_NAME_LEN, MAX_NAME_LEN
+from ..server_constants import LONG_NAME_LEN, MAX_NAME_LEN
 
 #from irods.exception import PAM_AUTH_PASSWORD_INVALID_TTL
 
@@ -39,31 +39,18 @@ from .low_level.message import PamAuthRequest, PamAuthRequestOut
 ## destructor is called. Used in a unit test
 DESTRUCTOR_MSG = "connection __del__() called"
  
-from .. import (
-     RESPONSE_LEN,
-     NATIVE_AUTH_SCHEME,
-          # DWM - delete:?
-                #    MAX_PASSWORD_LENGTH,
-                #    AUTH_SCHEME_KEY,
-                #    AUTH_USER_KEY,
-                #    AUTH_PWD_KEY,
-                #    AUTH_TTL_KEY,
-                #    GSI_AUTH_PLUGIN,
-                #    GSI_AUTH_SCHEME,
-                #    GSI_OID,
-                #    PAM_AUTH_SCHEME,
-                #    PAM_AUTH_SCHEMES,
-)
+from ..server_constants import RESPONSE_LEN
+from .. import NATIVE_AUTH_SCHEME
 
-from rods.client_server_negotiation import (
-#    perform_negotiation,
-#    validate_policy,
-#    REQUEST_NEGOTIATION,
-#    REQUIRE_TCP,
-#    FAILURE,
-#    USE_SSL,
-#    CS_NEG_RESULT_KW,
-#)
+from .low_level.client_server_negotiation import (
+    perform_negotiation,
+    validate_policy,
+    REQUEST_NEGOTIATION,
+    FAILURE,
+    USE_SSL,
+    REQUIRE_TCP,
+    CS_NEG_RESULT_KW
+)
 #from irods.api_number import api_number
 #
 #logger = logging.getLogger(__name__)
