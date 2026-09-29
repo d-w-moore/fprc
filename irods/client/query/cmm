@@ -1,0 +1,32 @@
+class ModelBase(type):
+    @classmethod
+class Model(metaclass=ModelBase):
+class RuleExec(Model):
+class Zone(Model):
+class User(Model):
+class UserAuth(Model):
+class CollectionUser(Model):
+class Group(Model):
+class Resource(Model):
+    class_name = Column(String, "R_CLASS_NAME", 305)
+class DataObject(Model):
+class Collection(Model):
+class DataObjectMeta(Model):
+class CollectionMeta(Model):
+class ResourceMeta(Model):
+class UserMeta(Model):
+class DataAccess(Model):
+class CollectionAccess(Model):
+class SpecificQueryResult(Model):
+class Keywords(Model):
+class Quota(Model):
+class TicketQuery:
+    """Various model classes for querying attributes of iRODS tickets.
+    Namespacing these model classes under the TicketQuery parent class allows
+    class Ticket(Model):
+    class DataObject(Model):
+    class Collection(Model):
+    class Owner(Model):
+    class AllowedHosts(Model):
+    class AllowedUsers(Model):
+    class AllowedGroups(Model):
