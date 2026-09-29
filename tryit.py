@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from irods.client.connection import Connection
 from irods.client.account import iRODSAccount
 
