@@ -43,7 +43,7 @@ IRODS_QUERY_LIMIT = 500
 
 
 class Query:
-    def __init__(self, conn, args: Sequence[Model|Column|Column_remover], /, **kwargs):
+    def __init__(self, conn, column_args: Sequence[Model|Column|Column_remover], /, **kwargs):
         self.conn = conn
         self.columns = OrderedDict()
         self.criteria = []
@@ -52,9 +52,9 @@ class Query:
         self._offset = 0
         self._continue_index = 0
         self._keywords = {}
-        self._args = args
+        self._column_args = column_args
 
-        for arg in args:
+        for arg in column_args:
             if isinstance(arg, type) and issubclass(arg, Model):
                 for col in arg._columns:
 # DWM revisit:      if self.sess.server_version >= col.min_version:
@@ -67,7 +67,7 @@ class Query:
                 raise TypeError("Arguments must be models or columns")
 
     def _clone(self):
-        new_q = Query(self.conn, self._args)
+        new_q = Query(self.conn, self._column_args)
         new_q.columns = self.columns
         new_q.criteria = self.criteria
         new_q.case_sensitive = self.case_sensitive
