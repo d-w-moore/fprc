@@ -15,7 +15,7 @@ account = iRODSAccount(
 
 conn = Connection( account )
 
-for row in Query(conn, DataObject, Collection.name).filter(Like(DataObject.name, 'a%')):
+for row in Query(conn, [DataObject, Collection.name]).filter(Like(DataObject.name, 'a%')):
   coll = row[Collection.name]
   id = row[DataObject.id]
   data = row[DataObject.name]

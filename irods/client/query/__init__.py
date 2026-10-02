@@ -1,4 +1,6 @@
 from collections import OrderedDict
+from typing import Sequence
+
 
 from ...server_constants import MAX_SQL_ROWS
 
@@ -41,7 +43,7 @@ IRODS_QUERY_LIMIT = 500
 
 
 class Query:
-    def __init__(self, conn, *args, **kwargs):
+    def __init__(self, conn, args: Sequence[Model|Column|Column_remover], /, **kwargs):
         self.conn = conn
         self.columns = OrderedDict()
         self.criteria = []
@@ -50,6 +52,7 @@ class Query:
         self._offset = 0
         self._continue_index = 0
         self._keywords = {}
+        self._args = args
 
         for arg in args:
             if isinstance(arg, type) and issubclass(arg, Model):
@@ -64,7 +67,7 @@ class Query:
                 raise TypeError("Arguments must be models or columns")
 
     def _clone(self):
-        new_q = Query(self.conn)
+        new_q = Query(self.conn, self._args)
         new_q.columns = self.columns
         new_q.criteria = self.criteria
         new_q.case_sensitive = self.case_sensitive
