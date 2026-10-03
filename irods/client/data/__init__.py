@@ -1,4 +1,6 @@
 from ...api_number import api_number
+from ..low_level import keywords as kw
+
 from ..low_level.message import (
     FileOpenRequest,
     FileSeekResponse,
@@ -18,6 +20,34 @@ O_TRUNC = 512
 # TODO: This is suspect, since we don't know that iRODS and Linux agree on the value.
 from os import SEEK_SET
 
+# TODO logging of XML
+
+def data_unlink(conn, /, path, force=False, **options):
+    # TODO: maybe leave it to caller to pass the iRODS flag in options.
+    if force:
+        options[kw.FORCE_FLAG_KW] = ""
+
+    # TODO: Q: Is this for redundancy?
+    try:
+        oprType = options[kw.OPR_TYPE_KW]
+    except KeyError:
+        oprType = 0
+
+    message_body = FileOpenRequest(
+        objPath=path,
+        createMode=0,
+        openFlags=0,
+        offset=0,
+        dataSize=-1,
+        # TODO: Q: why have numThreads != 1 for an UNLINK?
+        numThreads=1,
+        oprType=oprType,
+        KeyValPair_PI=StringStringMap(options),
+    )
+    message = iRODSMessage("RODS_API_REQ", msg=message_body, int_info=api_number["DATA_OBJ_UNLINK_AN"])
+    conn.send(message)
+    _ = conn.recv()
+
 def data_open(conn, /, path, flags=O_RDONLY, **options):
     message_body = FileOpenRequest(
         objPath=path,
@@ -34,6 +64,7 @@ def data_open(conn, /, path, flags=O_RDONLY, **options):
     response = conn.recv()
     return response.int_info
 
+def g(): pass
 def data_seek(conn, /, desc, offset, whence=SEEK_SET):
     message_body = OpenedDataObjRequest(
         l1descInx=desc,
