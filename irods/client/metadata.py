@@ -2,7 +2,9 @@
 from ..api_number import api_number
 from .low_level.message import MetadataRequest, iRODSMessage
 
-def data_avu(conn,op,/,path,avu,**opt):
+# op can be : "set", "add", "rm"
+
+def data_avu(conn, op, /, path, avu, **opt):
     message_body = MetadataRequest(
         op, "-d", path, *avu, **opt
     )
