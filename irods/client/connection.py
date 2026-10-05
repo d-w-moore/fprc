@@ -40,7 +40,7 @@ from .low_level.message import PamAuthRequest, PamAuthRequestOut
 DESTRUCTOR_MSG = "connection __del__() called"
  
 from ..server_constants import RESPONSE_LEN
-from .. import NATIVE_AUTH_SCHEME
+from ..connect_constants import NATIVE_AUTH_SCHEME
 
 from .low_level.client_server_negotiation import (
     perform_negotiation,
