@@ -15,13 +15,17 @@ account = iRODSAccount(
 
 conn = Connection( account )
 
-(Collection, DataObject, -DataObject.map_id, -DataObject.status, -Collection.map_id)
+# Negating individual columns will exclude them from the row results.  Order is important.
+
 for row in Query(
     conn, 
-    (DataObject, Collection, -DataObject.map_id, -DataObject.status, -Collection.map_id)
-  ).filter(
-      Like(DataObject.name, 'a%')
-  ):
-  coll = row[Collection.name]
-  data = row[DataObject.name]
-  print( f'{row[DataObject.id]=} {row[Collection.id]=}: {coll}/{data}')
+    (    DataObject,
+         Collection,
+         -DataObject.map_id,
+         -DataObject.status,
+         -Collection.map_id,
+    )
+).filter( Like(DataObject.name, 'a%'), ):
+    coll = row[Collection.name]
+    data = row[DataObject.name]
+    print( f'{row[DataObject.id]=} {row[Collection.id]=}: {coll}/{data}')
