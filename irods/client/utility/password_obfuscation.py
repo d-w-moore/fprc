@@ -4,7 +4,7 @@ import os
 import time
 import random
 import string
-from .. import MAX_PASSWORD_LENGTH
+from ...server_constants import MAX_PASSWORD_LENGTH
 
 seq_list = [
     0xD768B678,
