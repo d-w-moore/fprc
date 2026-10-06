@@ -34,15 +34,17 @@ conn = Connection( account )
 def test_data_and_metadata_create():
     desc = None
     try:
+        # Create a data object.
         desc = data_open(conn, PATH, O_WRONLY|O_CREAT)
-        #input('->')
         data_close(conn, desc)
 
-        my_avu = ( pseudorandom_string(), 'my-value', 'my-units')
+        my_avu = (pseudorandom_string(), 'my-value', 'my-units')
 
         def my_avu_occurrences():
+            "For tests, return the number of avu's both attached to a data object and matching the name field for my_avu"
             return len(list(Query(conn, (DataObjectMeta, DataObject)).filter(DataObjectMeta.name == my_avu[0])))
 
+        # Attach an AVU, then delete it.  For both operations, check that a query gives the expected number of result rows.
         avu_operation(conn, irods_object_type.DATA_OBJECT, "add", PATH, my_avu)
         assert(my_avu_occurrences() == 1)
 
