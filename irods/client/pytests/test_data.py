@@ -10,21 +10,24 @@ from irods.client.data import (
     O_WRONLY
 )
 from irods.client.connection import Connection
-from irods.client.metadata import data_avu
+from irods.client.metadata import avu_operation, irods_object_type
 from irods.client.account import iRODSAccount
-#from irods.client.query import Query
-#from irods.client.query.models import DataObject,Collection
-#from irods.client.query.column import Like
+from irods.client.query import Query
+from irods.client.query.models import DataObjectMeta, DataObject
 
-PATH = '/tempZone/home/rods/abc.dat-' + uuid.uuid1().hex
+def pseudorandom_string():
+    return uuid.uuid1().hex
+
 
 account = iRODSAccount(
     'localhost',
     1247,
-    'rods',
-    'tempZone',
+    user := 'rods',
+    zone := 'tempZone',
     password='rods'
 )
+
+PATH = f'/{zone}/home/{user}/abc.dat-' + pseudorandom_string()
 
 conn = Connection( account )
 
@@ -34,7 +37,18 @@ def test_data_and_metadata_create():
         desc = data_open(conn, PATH, O_WRONLY|O_CREAT)
         #input('->')
         data_close(conn, desc)
-        data_avu(conn, "add", PATH, ("aa","bb",))
+
+        my_avu = ( pseudorandom_string(), 'my-value', 'my-units')
+
+        def my_avu_occurrences():
+            return len(list(Query(conn, (DataObjectMeta, DataObject)).filter(DataObjectMeta.name == my_avu[0])))
+
+        avu_operation(conn, irods_object_type.DATA_OBJECT, "add", PATH, my_avu)
+        assert(my_avu_occurrences() == 1)
+
+        avu_operation(conn, irods_object_type.DATA_OBJECT, "rm", PATH, my_avu)
+        assert(my_avu_occurrences() == 0)
+
     finally:
-        if desc:
+        if desc is not None:
             data_unlink(conn, PATH, force=True)
